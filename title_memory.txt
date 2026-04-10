@@ -8,3 +8,4 @@ your smart home upgrade:
 smart home automation with
 iot & home automation
 iot security made simple:
+amazon basics rj45 cat-6
