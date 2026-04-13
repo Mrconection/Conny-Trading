@@ -34,7 +34,7 @@ jobs:
       - name: Execute Phantom Brain
         env:
           # Pulls the encrypted bot code from your GitHub Vault
-          PHANTOM_VPROP_CODE: ${{ secrets.PHANTOM_BOT_CODE }}
+          PHANTOM_VPROP_CODE: ${{ secrets.PHANTOM_VPROP_CODE }}
           
           # (Optional) If you left os.environ.get() for Telegram, it pulls them here
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
