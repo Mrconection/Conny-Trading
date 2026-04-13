@@ -1,0 +1,44 @@
+name: VPropTrader Phantom Engine
+
+on:
+  # 1. Manual Override: Allows you to start the bot by clicking a button in GitHub
+  workflow_dispatch: 
+  
+  # 2. Automated Server Refresh: Restarts the bot every 5 hours, Monday through Friday
+  schedule:
+    - cron: '0 */5 * * 1-5'
+
+# 3. CRITICAL SECURITY: This prevents two bots from running at the same time and sending double signals
+concurrency:
+  group: phantom-quant-engine
+  cancel-in-progress: true
+
+jobs:
+  deploy-engine:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Vault
+        uses: actions/checkout@v4
+
+      - name: Boot Python 3.12 Engine
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Radar Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas pandas-ta requests yfinance python-dotenv
+
+      - name: Execute Phantom Brain
+        env:
+          # Pulls the encrypted bot code from your GitHub Vault
+          PHANTOM_VPROP_CODE: ${{ secrets.PHANTOM_BOT_CODE }}
+          
+          # (Optional) If you left os.environ.get() for Telegram, it pulls them here
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          
+        # Make sure this matches the exact name of your public Python file
+        run: python vprop_trader.py
