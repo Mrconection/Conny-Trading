@@ -73,3 +73,4 @@ clip & carry edc
 tomtoc compact edc sling
 gerber gear driver keychain
 clip & carry edc
+fosi audio box x2
