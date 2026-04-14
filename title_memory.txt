@@ -72,3 +72,4 @@ tomtoc compact edc sling
 clip & carry edc
 tomtoc compact edc sling
 gerber gear driver keychain
+clip & carry edc
