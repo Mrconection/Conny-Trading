@@ -2,3 +2,5 @@ requests
 pillow
 groq
 python-dotenv
+selenium
+beautifulsoup4
