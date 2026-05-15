@@ -470,3 +470,4 @@ echtpower switch 2 pro
 switch 2 dock, portable
 rig r5 spear pro
 turtle beach stealth pro
+lenovo ideacentre all-in-one desktop
