@@ -469,3 +469,4 @@ szdilong 2.4ghz wireless controller
 echtpower switch 2 pro
 switch 2 dock, portable
 rig r5 spear pro
+turtle beach stealth pro
