@@ -492,3 +492,4 @@ epz p50 in ear
 epz p40 iem headphones
 compatible toner cartridge replacement
 compatible toner cartridge replacement
+bluetooth 5.4 language translator
