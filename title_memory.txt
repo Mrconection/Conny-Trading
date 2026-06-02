@@ -621,3 +621,4 @@ usb c to ar
 official right hand controller
 nyxi hyperion 3 switch
 tcl nxtpaper 14 android
+tf sd card 512gb
