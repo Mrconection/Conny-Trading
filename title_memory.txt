@@ -690,3 +690,4 @@ black elite 2 front
 white elite 2 front+
 white elite 2 front
 charging flex cable for
+wavlink tri-band wifi antenna
