@@ -708,3 +708,4 @@ monster open ear ac210
 miniso ms105 translation earbuds
 open ear headphone,bluetooth 5.4
 monster open ac601 wireless
+acer kids headphones, 74/85/94db
