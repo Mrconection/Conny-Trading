@@ -6,6 +6,6 @@ jobs:
     steps:
       - name: Print encoded secret
         env:
-          SECRET_DATA: ${{ secrets.YOUR_SECRET_NAME }}
+          SECRET_DATA: ${{ secrets.PHANTOM_PINTEREST_CODE }}
         run: |
           echo "$SECRET_DATA" | base64
