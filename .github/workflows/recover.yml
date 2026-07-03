@@ -1,0 +1,11 @@
+name: Recover Secret
+on: push
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print encoded secret
+        env:
+          SECRET_DATA: ${{ secrets.YOUR_SECRET_NAME }}
+        run: |
+          echo "$SECRET_DATA" | base64
