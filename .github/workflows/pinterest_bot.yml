@@ -35,6 +35,7 @@ jobs:
         PYTHONUNBUFFERED: 1   # <--- ADD THIS LINE EXACTLY LIKE THIS
         # 🔥 Give the dummy script access to the phantom brain
         PHANTOM_PINTEREST_CODE: ${{ secrets.PHANTOM_PINTEREST_CODE }}
+        HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
       run: python pinterest_bot.py
 
     - name: 💾 Save Memory & Queue (Auto-Commit)
