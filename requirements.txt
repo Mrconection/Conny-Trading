@@ -4,3 +4,4 @@ groq
 python-dotenv
 selenium
 beautifulsoup4
+rembg
