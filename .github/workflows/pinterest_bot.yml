@@ -4,9 +4,13 @@ on:
   # 1. The Manual "Start Key"
   workflow_dispatch: 
   
-  # 2. The Autopilot Schedule (Runs automatically EVERY HOUR)
+  on:
   schedule:
-    - cron: '0 * * * *'
+    # 1. The Drip-Feed (24 Pins): Runs at minute 14 of every single hour
+    - cron: '14 * * * *'
+    
+    # 2. The 25th Pin: Runs exactly once a day at 12:44 UTC
+    - cron: '44 12 * * *'
 permissions:
   contents: write # Allows the bot to save memory files
 
