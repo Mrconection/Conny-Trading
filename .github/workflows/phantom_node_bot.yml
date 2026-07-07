@@ -1,0 +1,43 @@
+name: PHANTOM_NODE_BOT
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'
+  workflow_dispatch: 
+
+jobs:
+  scrape-amazon-nodes:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          
+      - name: Install API Wrapper
+        run: |
+          pip install python-amazon-paapi
+          
+      - name: Run Stealth Crawler
+        env:
+          # Pulls the hidden code payload
+          PHANTOM_NODE_CODE: ${{ secrets.PHANTOM_NODE_CODE }}
+          # Pulls the Amazon Keys needed inside the payload
+          AMAZON_CREDENTIAL_ID: ${{ secrets.AMAZON_CREDENTIAL_ID }}
+          AMAZON_CREDENTIAL_SECRET: ${{ secrets.AMAZON_CREDENTIAL_SECRET }}
+          AMAZON_TAG: ${{ secrets.AMAZON_TRACKING_ID }}
+        run: |
+          python scrape_nodes.py
+          
+      - name: Commit and Push Updated CSV Database
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[PHANTOM_NODE_BOT] Automated category tree update"
+          file_pattern: "*.csv"
