@@ -5,3 +5,4 @@ python-dotenv
 selenium
 beautifulsoup4
 rembg[cpu]
+huggingface_hub
