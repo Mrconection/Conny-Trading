@@ -1,0 +1,23 @@
+name: Board ID Scraper Utility
+
+on:
+  workflow_dispatch: # This gives you a manual "Run workflow" button in GitHub
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Requests
+      run: pip install requests
+
+    - name: Run Scraper & Print Nodes
+      run: python scraper.py
