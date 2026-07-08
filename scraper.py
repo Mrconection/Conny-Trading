@@ -1,6 +1,10 @@
+import os
 import requests
 import re
 import sys
+
+# --- PULL THE TUNNEL KEY ---
+SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY")
 
 # --- 1. THE 14 NEW PINTEREST BOARD URLS ---
 PINTEREST_BOARD_URLS = [
@@ -39,48 +43,56 @@ AMAZON_NODES = [
 ]
 
 def generate_empire_map():
-    # Strict validation to ensure you don't map the wrong node to the wrong board
-    if len(PINTEREST_BOARD_URLS) != len(AMAZON_NODES):
-        print(f"[🚨] STRICT FATAL: You provided {len(PINTEREST_BOARD_URLS)} URLs but there are {len(AMAZON_NODES)} Amazon Nodes. They must match exactly. Aborting.")
+    if not SCRAPERAPI_KEY:
+        print("[🚨] STRICT FATAL: SCRAPERAPI_KEY is missing from environment. Aborting.")
         sys.exit(1)
 
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    }
+    if len(PINTEREST_BOARD_URLS) != len(AMAZON_NODES):
+        print(f"[🚨] STRICT FATAL: URL/Node mismatch. Aborting.")
+        sys.exit(1)
 
-    print("[*] Booting Scraper to extract 18-digit Board IDs...\n")
+    print("[*] Engaging ScraperAPI Stealth Tunnel to bypass Pinterest Firewalls...\n")
     print("TECH_EMPIRE_MAP = {")
 
     for i, url in enumerate(PINTEREST_BOARD_URLS):
         try:
-            response = requests.get(url, headers=headers, timeout=10)
+            # Route request through the stealth tunnel
+            payload = {'api_key': SCRAPERAPI_KEY, 'url': url, 'premium': 'true', 'render': 'true'}
+            response = requests.get('http://api.scraperapi.com', params=payload, timeout=60)
+            
+            if response.status_code != 200:
+                print(f"[🚨] Tunnel failed with status {response.status_code} for {url}. Retrying next run.")
+                continue
+
         except Exception as net_err:
-            print(f"[🚨] STRICT FATAL: Network crash when attempting to reach {url}. Error: {net_err}. Aborting.")
+            print(f"[🚨] STRICT FATAL: Network crash. Error: {net_err}. Aborting.")
             sys.exit(1)
             
-        # Regex engine hunting the initial-state JSON for the exact Board ID
-        match = re.search(r'\"board_id\":\"(\d+)\"', response.text)
+        # Multi-stage Regex Hunter
+        html = response.text
+        board_id = None
         
+        # Target 1: Mobile Deep Link (Highly reliable, rarely obfuscated)
+        match = re.search(r'pinterest://board/(\d+)', html)
         if not match:
-            # Secondary regex in case Pinterest localized the DOM structure
-            match = re.search(r'\"id\":\"(\d{18})\",\"type\":\"board\"', response.text)
-
+            # Target 2: Initial State JSON ID
+            match = re.search(r'\"board_id\":\"(\d+)\"', html)
         if not match:
-            print(f"\n[🚨] STRICT FATAL: Regex engine could not find Board ID for {url}. The DOM structure may have changed. Aborting.")
-            sys.exit(1)
-
-        board_id = match.group(1)
-        amazon_node = AMAZON_NODES[i]
-        
-        # Extracts the clean board name from the URL slug for code readability
-        board_slug = url.strip("/").split("/")[-1].replace("-", " ").title()
-        
-        # Prints the exact formatted dictionary syntax
-        print(f'    # {board_slug}')
-        print(f'    "{amazon_node}": "{board_id}",')
+            # Target 3: Alternate JSON format
+            match = re.search(r'\"id\":\"(\d{18})\",\"type\":\"board\"', html)
+            
+        if match:
+            board_id = match.group(1)
+            amazon_node = AMAZON_NODES[i]
+            board_slug = url.strip("/").split("/")[-1].replace("-", " ").title()
+            
+            print(f'    # {board_slug}')
+            print(f'    "{amazon_node}": "{board_id}",')
+        else:
+            print(f"    # [🚨] FAILED TO EXTRACT ID FOR: {url}")
 
     print("}")
-    print("\n[SUCCESS] Extraction complete. Copy the dictionary above into your main script.")
+    print("\n[SUCCESS] Extraction complete.")
 
 if __name__ == "__main__":
     generate_empire_map()
