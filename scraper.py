@@ -51,34 +51,33 @@ def generate_empire_map():
         print(f"[🚨] STRICT FATAL: URL/Node mismatch. Aborting.")
         sys.exit(1)
 
-    print("[*] Engaging ScraperAPI Stealth Tunnel to bypass Pinterest Firewalls...\n")
+    print("[*] Engaging Lightweight Stealth Tunnel...\n")
     print("TECH_EMPIRE_MAP = {")
 
     for i, url in enumerate(PINTEREST_BOARD_URLS):
         try:
-            # Route request through the stealth tunnel
-            payload = {'api_key': SCRAPERAPI_KEY, 'url': url, 'premium': 'true', 'render': 'true'}
+            # We removed 'render': 'true' to stop Pinterest from crashing the headless browser
+            payload = {'api_key': SCRAPERAPI_KEY, 'url': url, 'premium': 'true'}
             response = requests.get('http://api.scraperapi.com', params=payload, timeout=60)
             
             if response.status_code != 200:
-                print(f"[🚨] Tunnel failed with status {response.status_code} for {url}. Retrying next run.")
+                print(f"    # [🚨] Tunnel failed with status {response.status_code} for {url}.")
                 continue
 
         except Exception as net_err:
-            print(f"[🚨] STRICT FATAL: Network crash. Error: {net_err}. Aborting.")
-            sys.exit(1)
+            print(f"    # [🚨] STRICT FATAL: Network crash. Error: {net_err}.")
+            continue
             
-        # Multi-stage Regex Hunter
         html = response.text
         board_id = None
         
-        # Target 1: Mobile Deep Link (Highly reliable, rarely obfuscated)
-        match = re.search(r'pinterest://board/(\d+)', html)
+        # Upgraded Regex Engine: Now hunts for the modern camelCase syntax
+        match = re.search(r'\"boardId\":\"(\d+)\"', html)
         if not match:
-            # Target 2: Initial State JSON ID
             match = re.search(r'\"board_id\":\"(\d+)\"', html)
         if not match:
-            # Target 3: Alternate JSON format
+            match = re.search(r'pinterest://board/(\d+)', html)
+        if not match:
             match = re.search(r'\"id\":\"(\d{18})\",\"type\":\"board\"', html)
             
         if match:
