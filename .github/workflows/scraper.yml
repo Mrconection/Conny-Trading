@@ -1,7 +1,7 @@
 name: Board ID Scraper Utility
 
 on:
-  workflow_dispatch: # This gives you a manual "Run workflow" button in GitHub
+  workflow_dispatch: 
 
 jobs:
   run-scraper:
@@ -19,5 +19,7 @@ jobs:
     - name: Install Requests
       run: pip install requests
 
-    - name: Run Scraper & Print Nodes
+    - name: Run Stealth Scraper & Print Nodes
+      env:
+        SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
       run: python scraper.py
