@@ -960,3 +960,4 @@ portable bluetooth speaker, 2026
 ugreen 8k@60hz displayport kvm
 2pack invisible stand charging
 netum nt-480 fixed mount
+noctua nl-lc1-24 240mm quiet
