@@ -962,3 +962,4 @@ ugreen 8k@60hz displayport kvm
 netum nt-480 fixed mount
 noctua nl-lc1-24 240mm quiet
 ps5 controller charger with
+linsoul tangzu wan'er s.g
