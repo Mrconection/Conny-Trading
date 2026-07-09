@@ -946,3 +946,4 @@ hp 15.6" ultrabook laptop
 wired earbuds, in-ear headphones
 bone conduction swimming headphones,
 lenovo thinkpad x1 copilot+
+usb c to usb
